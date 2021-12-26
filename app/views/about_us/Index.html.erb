@@ -1,0 +1,103 @@
+<head>
+  <style>
+
+    h1 {
+      text-align: center;
+    }
+
+    .card {
+      border-radius: 2em;
+      text-align: center;
+      box-shadow: 0 5px 10px rgba(0,0,0,.2);
+    }
+
+    .card:hover{
+      box-shadow: 0 5px 10px rgba(0,0,0,.5);
+    }
+
+    .list-group-flush .list-group-item {
+      font-size: 15px;
+    }
+
+    .css_img {
+      border-radius: 2em 2em 2em 2em;
+      width: 100%;
+    }
+
+    .container {
+      max-width: 65em;
+      margin: 0 auto;
+    }
+
+    .button-container {
+      margin-left: auto;
+      margin-right: auto;
+      justify-content: center;
+      width: 8em;
+    }
+
+
+ </style>
+</head>
+
+<body>
+    <% # Displaying about us section %>
+    <div class="about-us-section">
+
+      <div class="inner container">
+        <center><h1>About Us</h1>
+        <img class="img-responsive" width="250" height="250" src="https://nick-network.s3.us-east-2.amazonaws.com/imgNN.jpg">
+        <p class="text">
+          <center><h2 style="font-size:20px">
+          We are the Aggie Nickwork, a group of students who aim to bring the Nicks of Texas A&M together.
+          We offer Nicks the opportuninty to meet each other and host events for Nicks to attend.
+          Everyone is welcome to join, even if your name is not Nick
+          (the name you choose to be referred to as must include some variation of “Nic, Nich”).
+          </h2>
+        </p>
+
+        <% # Displaying History section %>
+        <h2> History </h2>
+        <center><h2 style="font-size:20px">
+        Long ago, circa September 2019, an Aggie by the name of Nic came to know three fellow Nicks.
+        As a joke, he added all the Nicks to a group chat and said to keep adding other Nicks they knew.
+        Slowly the number grew to 30 when one Nick asked if this was an org. Nic said, “No, but it can be”
+        and proceeded to jump through the rigorous hoops of establishing a registered org on campus.
+        In late October, a newspaper article about the new “Aggie Nickwork” brought in about 70 new members
+        and an advisor and the rest is history.
+        </h2>
+
+        <% # Displaying members section %>
+        <h3> Administrator </h3>
+      </div>
+    </div>
+
+<center>
+
+<% # Displaying information about the officers in a card %>
+<div class="President" style="width: 18rem;">
+  <% results = ActiveRecord::Base.connection.exec_query("select id from members where email='theaggienickwork@gmail.com'") %>
+  <% resultname = ActiveRecord::Base.connection.exec_query("select name from members where email='theaggienickwork@gmail.com'") %>
+  <%= resultname.rows[0][0] %>'s Contact<br>
+  <%= link_to '<button type="button"> Contact </button>'.html_safe, member_url(results.rows[0][0]) %>
+</div>
+
+<% # Displaying Membership details section %>
+<center><h3 style="font-size:30px" Membership>
+Membership
+</center><h2 style="font-size:20px">
+Anyone named Nick, Nic, Nicholas, Nicolas, Nikolas, Nicole, Nicky, etc will be allowed to join
+automatically. <br>For those not named Nick, they have to agree to have their name in the GroupMe
+as some form of Nick. <br>(Example: Alyssa = Nicolyssa)
+</h2>
+
+
+<div class="container py-5">
+    <div class="row text-center text-white">
+        <div class="col-lg-8 mx-auto">
+            </p>
+        </div>
+    </div>
+</div><!-- End -->
+
+</body>

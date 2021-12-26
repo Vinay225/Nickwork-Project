@@ -1,0 +1,35 @@
+
+<% # Check if the current user is the ADMIN %>
+<% if current_user.uid == @comment.userID  || current_user.uid == "110391296899575374577" %>
+  <%= link_to 'Back', news_post_path %>
+  <center>
+  <div class="news posts delete">
+
+    <% # Displaying comment to be deleted %>
+    <h2>Post to be deleted</h2>
+    <%= form_for(@comment, :method => 'delete') do |f| %>
+
+      <p>Are you sure you want to permanently delete this comment?</p>
+      <div class="mx-auto" style="width: 300px; margin-left: auto; margin-right: auto;">
+        <div class="card" style="width: 300px; border: 3px solid black; margin-left: auto; margin-right: auto;">
+          <div class="card-body"><center>
+            <p class="card-text"><em><%= @comment.description %></em></p>
+          </center></div>
+        </div>
+      </div>
+
+      <% # Confirm button to delete %>
+      <div class="form-buttons">
+        <%= f.submit("Delete Comment") %>
+      </div>
+
+    <% end %>
+  </div>
+  </center>
+  <% else %>
+    <center>
+    <% # If the user is not an ADMIN, redirect them back %>
+    <h1>Not your comment!</h1>
+    <%= link_to 'Back', news_post_path %>
+    </center>
+  <% end %>

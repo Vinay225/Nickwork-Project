@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <style>
+
+    .full-width-row {
+      overflow-x: hidden;
+    }
+
+    .full-width-row > div {
+      margin-right: -450px;
+    }
+
+    .topM > div {
+      margin-top: 50px;
+      margin-bottom: 50px;
+    }
+
+
+  </style>
+
+</head>
+
+<center>
+
+  <% # Displaying information about the officers %>
+  <div class="container mt-5 d-flex justify-content-center">
+    <div class="card p-3 topM">
+      <div class="d-flex align-items-center">
+          <div class="ml-3 w-100">
+            <% results = ActiveRecord::Base.connection.exec_query("select id from members where email='theaggienickwork@gmail.com'") %>
+            <% resultname = ActiveRecord::Base.connection.exec_query("select name from members where email='theaggienickwork@gmail.com'") %>
+            <% resultphone = ActiveRecord::Base.connection.exec_query("select phone from members where email='theaggienickwork@gmail.com'") %>
+            <% resultemail = ActiveRecord::Base.connection.exec_query("select email from members where email='theaggienickwork@gmail.com'") %>
+            <h3><u>Administrator</u></h3>
+            <h4 class="mb-0 mt-0">
+              <%= resultname.rows[0][0] %></h4>
+              <span>Position: Chief Student Officer</span>
+              <h5>Email: <%= resultemail.rows[0][0] %></h5>
+              <p>Phone: <%= resultphone.rows[0][0] %></p><br>
+              <%= link_to '<button type="button"> Contact </button>'.html_safe, member_url(results.rows[0][0]) %>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <% # Displaying Instagram and GroupMe social media links %>
+      <div class="container mt-5 d-flex justify-content-center">
+        <div class="row width: 100% ">
+          <div class="ml-3 w-100">
+            <% results_gal = ActiveRecord::Base.connection.exec_query("select id from galleries where title='qr_code_contact'") %>
+            Press the following button to get access to social media QR codes.<br><br>
+            <% if results_gal.rows[0].nil? %>
+              <%= "No QR codes have been posted, check back later." %>
+            <% else %>
+            <%=  link_to '<button type="button"> QR Codes </button>'.html_safe, gallery_url(results_gal.rows[0][0]) %><br>
+            <% end %>
+          </div>
+        <div>
+      </div>
+    </div>
+  </center>
+
+  <% # Displaying documentation information for the ADMIN %>
+  <% if current_user.uid == "110391296899575374577" %>
+    <center>
+      <div class="row-fluid">
+        <h4>
+          <br>Documentation<br><br>
+          <h5> To add a QR code, please go to the GALLERY page and create a single post titled "qr_code_contact" </h5>
+          <%= link_to "Amazon Picture Help", "https://docs.google.com/document/d/15LkgjSE5-InskQar09UcoghFitByyfSqucNxAL0qiRA/edit", target: :_blank%><br>
+          <%= link_to "System Support Documenation", "https://docs.google.com/document/d/1EB25wmwI_PCHuceAIERcGpIPJRtQVgEfDPXHnY2OrFs/edit", target: :_blank%><br>
+          <%= link_to "Herkou Application Support", "https://docs.google.com/document/d/1LcE3QQhX_AqavPV3S8XqnhI5Hlw8jwGh83IJECfFGmk/edit", target: :_blank%><br>
+          <%= link_to "Training", "https://docs.google.com/document/d/1E1_i4_a4zeg3JZplvJ4OWlVKDvbveRfIHxUTujvLdGY/edit", target: :_blank%><br>
+          <%= link_to "General Help", "https://docs.google.com/document/d/1lX7qAlouZDCyxwDu-8HxL2MEXLvRNMnOsqW3_Wn_CvU/edit?usp=sharing", target: :_blank%><br>
+        </h4>
+      </div>
+    </center>
+  <% end %>
+</html>

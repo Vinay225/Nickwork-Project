@@ -1,0 +1,126 @@
+<head>
+  <style>
+
+    h1 {
+      text-align: center;
+    }
+
+    .card {
+      text-align: center;
+    }
+
+    .css_img {
+      width: 100%;
+    }
+
+    .container {
+      max-width: 65em;
+      margin: 0 auto;
+    }
+
+    .button-container {
+      margin-left: auto;
+      margin-right: auto;
+      justify-content: center;
+      width: 8em;
+    }
+
+
+ </style>
+</head>
+
+<p id="notice"><%= notice %></p>
+
+<% # Displaying profile's name %>
+<h1> <%= @member.name %> </h1>
+
+<div class="container">
+        <div class="card mb-3">
+          <div class="row g-0">
+
+            <% # Displaying image inside the card, if no image is attached %>
+            <% # then it displays a default image %>
+            <div class="col-md-4">
+            <% if @member.photo.attached? %>
+              <%= image_tag(@member.photo, width: 200) %>
+            <% else %>
+              <%= image_tag("https://nick-network.s3.us-east-2.amazonaws.com/Default.jpg", class: "css_img") %>
+            <% end %>
+            </div>
+
+            <% # Displaying profile's description %>
+            <div class="col-md-8">
+              <div class="card-body">
+                <p class="card-text"> <%= @member.description %> </p>
+              </div>
+
+              <% # Adjusting sizing to display what each fied is %>
+              <table class="table table-sm">
+                <colgroup>
+                  <col span="1" style="width: 28%;">
+                  <col span="1" style="width: 72%;">
+                </colgroup>
+
+                <tbody>
+
+                  <% # Displaying profile's birthday in MM/DD/YYYY format %>
+                  <tr>
+                    <th scope="row", style="font-weight: normal; color: gray;"> Birthday </th>
+                    <td>
+                    <% if @member.birthday%>
+                      <%= @member.birthday.strftime("%m/%d/%Y") %>
+                    <% end %>
+                    </td>
+                  </tr>
+
+                  <% # Displaying profile's college classification %>
+                  <tr>
+                  <th scope="row", style="font-weight: normal; color: gray;"> Classification </th>
+                  <td> <%= @member.classification %> </td>
+                  </tr>
+
+                  <% # Displaying profile's college major %>
+                  <tr>
+                  <th scope="row", style="font-weight: normal; color: gray;"> Major </th>
+                  <td> <%= @member.major %> </td>
+                  </tr>
+
+                  <% # Displaying profile's email %>
+                  <tr>
+                  <th scope="row", style="font-weight: normal; color: gray;"> Email </th>
+                  <td> <%= @member.email %> </td>
+                  </tr>
+
+                  <% # Displaying profile's phone number %>
+                  <tr>
+                  <th scope="row", style="font-weight: normal; color: gray;"> Phone </th>
+                  <td> <%= @member.phone %> </td>
+                  </tr>
+
+                  <% # Displaying when the profile was created %>
+                  <tr>
+                    <th scope="row", style="font-weight: normal; color: gray;"> Created on </th>
+                    <td> <%= @member.created_at.strftime("%m/%d/%Y at %I:%M%p") %> </td>
+                  </tr>
+
+                  <% # Displaying when the profile was last updated/edited %>
+                  <tr>
+                    <th scope="row", style="font-weight: normal; color: gray;"> Last updated on </th>
+                    <td> <%= @member.updated_at.strftime("%m/%d/%Y at %I:%M%p") %> </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <% # Only ADMIN and profile owner can edit and delete events, regular %>
+        <% # member can  only view %>
+        <div class="container", style="margin-left: 30em;">
+          <% if current_user.email == @member.email || current_user.uid == "110391296899575374577" %>
+            <%= link_to '<button type="button"> Edit </button>'.html_safe, edit_member_path(@member) %>
+            <%= link_to '<button type="button"> Delete </button>'.html_safe, delete_member_path(@member) %>
+          <% end %>
+          <%= link_to '<button type="button"> Back </button>'.html_safe, members_path %>
+        </div>
+</div>

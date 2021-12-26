@@ -1,0 +1,42 @@
+
+<% # Checking if the current user is the creator or ADMIN %>
+<% if current_user.uid == comment.userID || current_user.uid == "110391296899575374577" %>
+
+  <% # Displaying any errors found when submitting the form %>
+  <%= form_with(model: comment) do |form| %>
+    <% if comment.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(comment.errors.count, "error") %> prohibited this post from being saved:</h2>
+
+        <ul>
+          <% comment.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <% # Displaying edit form %>
+    <div class="mx-auto" style="width: 300px; margin-left: auto; margin-right: auto;">
+      <div class="card" style="width: 300px; border: 3px solid black; margin-left: auto; margin-right: auto;">
+
+        <% # Displaying field to input new description %>
+        <div class="card-body"><center>
+          <p><em><%= form.label :description %><br><%= form.text_area :description, :rows => 10 %></em></p>
+        </center></div>
+      </div>
+    </div>
+
+    <% # Displaying submit button %>
+    <center>
+      <div class="actions">
+        <%= form.submit %>
+      </div>
+    </center>
+  <% end %>
+  <% else %>
+  <% # If the user is not the creator or ADMIN, display error message %>
+    <center>
+    <h1>Not your comment!</h1>
+    </center>
+  <% end %>

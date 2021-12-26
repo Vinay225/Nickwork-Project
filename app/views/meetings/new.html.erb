@@ -1,0 +1,19 @@
+
+<% # Only ADMIN is allowed on this page %>
+<% if current_user.uid == "110391296899575374577" %>
+  <h1>New Meeting</h1>
+
+  <% # Rendering meeting form %>
+  <%= render 'form', meeting: @meeting %>
+
+  <% # Button to cancel creation of new meeting %>
+  <center>
+    <%= link_to '<button type="button"> Back </button>'.html_safe, meetings_path %>
+  </center>
+<% else %>
+<% # Redirectering user if they aren't an ADMIN %>
+  <center>
+  <h1>You're not an admin!</h1>
+  <%= link_to 'Back', meetings_path %>
+  </center>
+<% end %>

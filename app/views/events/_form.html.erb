@@ -1,0 +1,115 @@
+<head>
+  <style>
+    h1 {
+      text-align: center;
+    }
+
+    .container {
+      max-width: 31em;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .bigger-container {
+      max-width: 35em;
+      margin: 0 auto;
+      background-color: #f2f2f2;
+    }
+
+    input {
+      padding: 12px 20px;
+      width: 400px;
+      margin: 8px 0;
+      box-sizing: border-box;
+    }
+
+    input[type=text]:focus {
+      background-color: lightgrey;
+      word-wrap: break-word;
+        word-break: break-all;
+    }
+
+    textarea {
+      width: 400px;
+      height: 100px;
+    }
+
+
+  </style>
+</head>
+
+<% # Check if the current user is the ADMIN %>
+<% if current_user.uid == "110391296899575374577" %>
+
+  <div class="bigger-container">
+    <div class="container">
+
+    <% # Displaying any errors found when submitting the form %>
+    <%= form_with(model: event) do |form| %>
+      <% if event.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(event.errors.count, "error") %> prohibited this event from being saved:</h2>
+
+          <ul>
+            <% event.errors.each do |error| %>
+              <li><%= error.full_message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <% # Displaying field to input title %>
+      <div class="field">
+        <%= form.label :title %>
+        <br>
+        <%= form.text_field :title, placeholder: "Enter title.." %>
+      </div>
+
+      <% # Displaying field to input description %>
+      <div class="field">
+        <%= form.label :description %>
+        <br>
+        <%= form.text_area :description, placeholder: "Enter description.." %>
+      </div>
+
+      <% # Displaying field to input date and time %>
+      <div class="field", style="max-width: 13rem">
+        <%= form.label :date_time, "Date and time" %>
+        <br>
+        <%= form.datetime_field :date_time %>
+      </div>
+
+      <% # Displaying field to input location %>
+      <div class="field">
+        <%= form.label :location %>
+        <br>
+        <%= form.text_field :location, placeholder: "Enter location.." %>
+      </div>
+
+      <% # Displaying field to input additional requirements %>
+      <div class="field">
+        <%= form.label :add_req, "Additional requirements" %>
+        <br>
+        <%= form.text_area :add_req, placeholder: "Enter any additional requirements.." %>
+      </div>
+
+      <% # Displaying field to upload a photo %>
+      <div class="field">
+        <%= form.file_field :photo %>
+      </div>
+
+      <% # Displaying submit button %>
+      <div class="actions">
+        <%= form.submit %>
+      </div>
+
+    <% end %>
+  </div>
+  </div>
+<% else %>
+  <% # Redirecting the user if they are not an ADMIN %>
+  <center>
+  <h1>You're not an admin!</h1>
+  <%= link_to 'Back', events_path %>
+  </center>
+<% end %>

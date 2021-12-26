@@ -1,0 +1,19 @@
+
+<% # Check if the current user is the ADMIN %>
+<% if current_user.uid == "110391296899575374577" %>
+  <center>
+    <h1>Editing Gallery</h1>
+
+    <% # Rendeting Editing form %>
+    <%= render 'form', gallery: @gallery %>
+
+    <% # Rendering buttons to cancel changes %>
+    <%= link_to 'Back', @gallery %>
+  </center>
+<% else %>
+<% # If the user is not an ADMIN, redirect them back %>
+  <center>
+  <h1>You're not an admin!</h1>
+  <%= link_to 'Back', galleries_path %>
+  </center>
+<% end %>

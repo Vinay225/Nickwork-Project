@@ -1,0 +1,122 @@
+<head>
+  <style>
+
+    h1 {
+      text-align: center;
+    }
+
+    .card {
+      border-radius: 2em;
+      text-align: center;
+      box-shadow: 0 5px 10px rgba(0,0,0,.2);
+    }
+
+    .card:hover{
+      box-shadow: 0 5px 10px rgba(0,0,0,.5);
+    }
+
+    .list-group-flush .list-group-item {
+      font-size: 15px;
+    }
+
+    .css_img {
+      border-radius: 2em 0em 0em 2em;
+      width: 110%;
+    }
+
+    .container {
+      max-width: 65em;
+      margin: 0 auto;
+    }
+
+    .button-container {
+      margin-left: auto;
+      margin-right: auto;
+      justify-content: center;
+      width: 8em;
+    }
+
+
+ </style>
+</head>
+
+<p id="notice"><%= notice %></p>
+
+<h1>Members</h1>
+
+<% # Displaying button to create a news profile if one user doesn't have %>
+<% # one alredy %>
+<div class="button-container">
+  <% member_exist = false %>
+  <% @members.each do |member| %>
+    <% if current_user.email == member.email %>
+      <% member_exist = true %>
+    <% end %>
+  <% end %>
+  <% if !member_exist %>
+    <%= link_to '<button type="button">Add New Member</button>'.html_safe, new_member_path %>
+  <% end %>
+</div>
+
+
+<br>
+
+  <% # Loop that displays all profiles in separate cards %>
+<div class="container">
+  <% @members.each do |member| %>
+        <div class="card mb-3" style="border: 3px solid black;">
+          <div class="row g-0">
+
+            <% # Displaying image inside the card, if no image is attached %>
+            <% # then it displays a default image %>
+            <div class="col-md-3">
+              <% if member.photo.attached? %>
+                <br><%= image_tag(member.photo,height: 140) %>
+              <% else %>
+                <%= image_tag("https://nick-network.s3.us-east-2.amazonaws.com/Default.jpg", class: "css_img") %>
+              <% end %>
+            </div>
+
+            <% # Displaying profile's name %>
+            <div class="col-md-8">
+              <div class="card-body">
+                <h5 class="card-title", style="font-size: 19px;"> <%= member.name %> </h5>
+              </div>
+
+              <% # Adjusting sizing to display what each fied is %>
+              <table class="table table-sm">
+                <colgroup>
+                  <col span="1" style="width: 15%;">
+                  <col span="1" style="width: 70%;">
+                </colgroup>
+
+                  <% # Displaying profile's classification %>
+                  <tr>
+                    <th scope="row", style="font-weight: normal; color: gray;"> Classification </th>
+                    <td> <%= member.classification %> </td>
+                  </tr>
+
+                  <% # Displaying profile's major %>
+                  <tr>
+                    <th scope="row", style="font-weight: normal; color: gray;"> Major </th>
+                    <td> <%= member.major %> </td>
+                  </tr>
+
+                </tbody>
+              </table>
+
+              <% # ADMIN or owner can edit and delete profiles, regular %>
+              <% # member can only view %>
+              <div class="card-body">
+                <%= link_to 'View', member, :class => "btn btn-primary" %>
+                <% if current_user.email == member.email || current_user.uid == "110391296899575374577" %>
+                  <%= link_to 'Edit', edit_member_path(member), :class => "btn btn-primary"%>
+                  <%= link_to 'Destroy', delete_member_path(member), :class => "btn btn-primary"%>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+        <br>
+  <% end %>
+</div>

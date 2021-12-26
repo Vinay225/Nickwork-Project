@@ -1,0 +1,76 @@
+
+<% # Check if the current user is the ADMIN and has an user id %>
+<% if current_user.uid == "110391296899575374577" && !(news_post.userID.blank?)  %>
+
+  <% # Displaying any errors found when submitting the form %>
+  <%= form_with(model: news_post) do |form| %>
+    <% if news_post.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(news_post.errors.count, "error") %> prohibited this post from being saved:</h2>
+
+        <ul>
+          <% news_post.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="mx-auto" style="width: 300px; margin-left: auto; margin-right: auto;">
+      <div class="card" style="width: 300px; border: 3px solid black; margin-left: auto; margin-right: auto;">
+        <div class="card-body"><center>
+
+          <% # Hidden fields to get user id and email from Google OAuth %>
+          <%= form.label :userID, news_post.userID %><%= form.hidden_field :userID, value: news_post.userID %><br>
+          <%= form.label :name, news_post.name %><%= form.hidden_field :name, value: news_post.name %>
+
+          <% # Displaying field to input title %>
+          <h5 class="card-title"><div class="field"><strong><%= form.label :title %><br><%= form.text_field :title %></strong></div></h5>
+
+          <% # Displaying field to input description %>
+          <p><em><%= form.label :description %><br><%= form.text_area :description, :rows => 10 %></em></p>
+
+        </center></div>
+      </div>
+    </div>
+
+    <% # Displaying submit button %>
+    <center>
+      <div class="actions">
+        <%= form.submit %>
+      </div>
+    </center>
+
+  <% end %>
+<% else %>
+  <%= form_with(model: news_post) do |form| %>
+    <% if news_post.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(news_post.errors.count, "error") %> prohibited this post from being saved:</h2>
+
+        <ul>
+          <% news_post.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="mx-auto" style="width: 300px; margin-left: auto; margin-right: auto;">
+      <div class="card" style="width: 300px; border: 3px solid black; margin-left: auto; margin-right: auto;">
+        <div class="card-body"><center>
+          User ID: <%= form.label :userID, current_user.uid %><%= form.hidden_field :userID, value: current_user.uid %><br>
+          Your name: <%= form.label :name, current_user.full_name %><%= form.hidden_field :name, value: current_user.full_name %>
+          <h5 class="card-title"><div class="field"><strong><%= form.label :title %><br><%= form.text_field :title %></strong></div></h5>
+          <p><em><%= form.label :description %><br><%= form.text_area :description, :rows => 10 %></em></p>
+        </center></div>
+      </div>
+    </div>
+
+    <center>
+      <div class="actions">
+        <%= form.submit %>
+      </div>
+    </center>
+  <% end %>
+<% end %>

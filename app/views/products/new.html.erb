@@ -1,0 +1,19 @@
+
+<% # Only ADMIN is allowed on this page %>
+<% if current_user.uid == "110391296899575374577" %>
+  <h1>New Product</h1>
+
+  <% # Rendering event form %>
+  <%= render 'form', product: @product %>
+
+  <% # Button to cancel creation of new event %>
+  <div class="container", style="margin-left: 10em;">
+    <%= link_to '<button type="button"> Back </button>'.html_safe, products_path %>
+  </div>
+<% else %>
+  <% # Redirectering user if they aren't an ADMIN %>
+  <center>
+  <h1>You're not an admin!</h1>
+  <%= link_to 'Back', products_path %>
+  </center>
+<% end %>

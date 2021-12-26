@@ -1,0 +1,130 @@
+<head>
+  <style>
+
+    h1 {
+      text-align: center;
+    }
+
+    .card {
+      border-radius: 2em;
+      text-align: center;
+      box-shadow: 0 5px 10px rgba(0,0,0,.2);
+    }
+
+    .card:hover{
+      box-shadow: 0 5px 10px rgba(0,0,0,.5);
+    }
+
+    .button-container {
+      margin-left: auto;
+      margin-right: auto;
+      justify-content: center;
+      width: 8em;
+    }
+
+    tr:nth-child(even) {
+      background-color: #ebf3ff;
+    }
+
+    tr:nth-child(odd) {
+      background-color: #dbeaff;
+    }
+
+
+  </style>
+</head>
+
+<p id="notice"><%= notice %></p>
+<br>
+
+<% # Displaying news post information %>
+<div class="mx-auto" style="width: 65%; margin-left: auto; margin-right: auto;">
+  <div class="card" style="width: 65%; border: 3px solid black; margin-left: auto; margin-right: auto;">
+    <div class="card-body" style="padding: 2%"><center>
+
+      <% # Displaying title %>
+      <h3 class="card-title"><%= @news_post.title %></h3>
+
+      <% # Displaying name %>
+      <h5 class="card-author"> Posted by: <%= @news_post.name %></h5>
+
+      <% # Displaying when post was created %>
+      <h5 class="card-post-date">Posted on: <%= @news_post.created_at.strftime("%m-%d-%Y") %></h5>
+
+      <% # Displaying description %>
+      <hr><p class="card-text"><em><%= @news_post.description %></em></p><hr>
+
+      <% if current_user.uid == @news_post.userID  || current_user.uid == "110391296899575374577" %>
+        <%= link_to 'Edit', edit_news_post_path(@news_post), :class => "btn btn-primary" %>
+        <%= link_to 'Delete', delete_news_post_path(@news_post), :class => "btn btn-primary" %>
+      <% end %>
+
+    </center></div>
+  </div>
+</div>
+
+<br>
+
+<% # Displaying comments section%>
+<div class="mx-auto" style="width: 65%; margin-left: auto; margin-right: auto;">
+  <div class="card" style="width: 65%; border: 3px solid blue; margin-left: auto; margin-right: auto;">
+    <div class="card-body" style="padding: 2%">
+      <center>
+      <h3 class="card-title">Comments</h3>
+
+        <table class="table table-bordered border-primary">
+
+          <% # Displaying "Be first to comment!" message if no comments %>
+          <% # in the post %>
+          <% if @news_post.comments.blank? %>
+            <%= "Be the first one to comment!" %>
+          <% end %>
+
+          <% # Displaying comments %>
+          <tbody>
+
+            <% # Loop to display all created comments %>
+            <% for comment in @news_post.comments %>
+            <tr>
+
+              <% # Displaying comment content (description) %>
+              <td> <%= comment.description %> <br> <br>
+
+                    <% # Displaying which user commented at what time %>
+                    <%= "Posted by " + comment.name + ", on "%>
+                    <%= comment.created_at.strftime("%m/%d/%Y at %I:%M%p") + " CST" %>
+
+                    <% # Displaying what time comment was edited, if any %>
+                    <% # it was edited %>
+                    <% if comment.created_at != comment.updated_at %>
+                      <br> <%= "Edited on " + comment.updated_at.strftime("%m/%d/%Y at %I:%M%p") + " CST" %>
+                    <% end %>
+
+                    <% # Displaying edit and delete buttons if the user is %>
+                    <% # is the creator of the comment or ADMIN %>
+                    <br>
+                    <% if current_user.uid == comment.userID  || current_user.uid == "110391296899575374577" %>
+                      <%= link_to 'Edit', edit_comment_path(comment), id: 1 %>
+                      <%= link_to 'Delete', delete_comment_path(comment), id: 2 %>
+                      <% end %>
+                  </td>
+            </tr>
+            <% end %>
+
+          </tbody>
+        </table>
+
+        <% # Displaying button to add new comment %>
+        <div class="button">
+          <%= link_to 'Add New Comment', "/comments/new?news_post=#{@news_post.id}", :class => "btn btn-primary" %>
+        </div>
+
+    </center>
+  </div>
+  </div>
+</div>
+
+<% # Displaying button to go back to index page %>
+<center>
+  <br><%= link_to 'Back', news_posts_path %>
+</center>

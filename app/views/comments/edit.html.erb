@@ -1,0 +1,7 @@
+
+<% # Displaying edit form %>
+<%= render 'comments/edit_form', comment: @comment %>
+
+<center>
+<%= link_to 'Back', "/news_posts/#{@comment.news_post_id}" %>
+</center>

@@ -1,0 +1,187 @@
+<head>
+  <style>
+    h1 {
+      text-align: center;
+    }
+
+    .container {
+      max-width: 31em;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .bigger-container {
+      max-width: 35em;
+      margin: 0 auto;
+      background-color: #f2f2f2;
+    }
+
+    input {
+      padding: 12px 20px;
+      width: 400px;
+      margin: 8px 0;
+      box-sizing: border-box;
+    }
+
+    input[type=text]:focus {
+      background-color: lightgrey;
+      word-wrap: break-word;
+        word-break: break-all;
+    }
+
+    textarea {
+      width: 400px;
+      height: 100px;
+    }
+
+
+  </style>
+</head>
+
+<% # Check if the current user is the ADMIN and has an user id %>
+<% if current_user.uid == "110391296899575374577" && !(member.name.blank?) %>
+
+  <div class="bigger-container">
+    <div class="container">
+
+    <% # Displaying any errors found when submitting the form %>
+    <%= form_with(model: @member) do |form| %>
+      <% if @member.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(member.errors.count, "error") %> prohibited this member from being saved:</h2>
+
+          <ul>
+            <% member.errors.each do |error| %>
+              <li><%= error.full_message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <% # Displaying field to input name %>
+      <div class="field">
+        <b>Your name:</b> <%= form.label :name, member.name %><%= form.text_field :name, value: member.name %>
+      </div>
+
+      <% # Displaying field to input description %>
+      <div class="field">
+        <%= form.label :description %>
+        <br>
+        <%= form.text_area :description, placeholder: "Enter a short description about yourself.." %>
+      </div>
+
+      <% # Displaying field to input birthday date %>
+      <div class="field">
+        <%= form.label :birthday, "Birthday" %>
+        <br>
+        <%= form.date_field :birthday %>
+      </div>
+
+      <% # Displaying field to input college classification %>
+      <div class="field">
+        <%= form.label :classification %>
+        <br>
+        <%= form.text_field :classification, placeholder: "Enter Classification.." %>
+      </div>
+
+      <% # Displaying field to input college major %>
+      <div class="field">
+      <%= form.label :major %>
+      <br>
+      <%= form.text_field :major, placeholder: "Enter Major.." %>
+      </div>
+
+      <% # Displaying field to input email, alredy filled out with %>
+      <% # Google OAuth %>
+      <div class="field">
+      <b>Email:</b> <%= form.label :email, member.email %><%= form.hidden_field :email, value: member.email %>
+      </div>
+
+      <% # Displaying field to input phone number %>
+      <div class="field">
+      <%= form.label :phone %>
+      <br>
+      <%= form.number_field :phone, placeholder: "Enter Phone.." %>
+      </div>
+
+
+      <div class="field">
+      <b>Profile picture:</b>.png and .jpg allowed<%= form.file_field :photo %>
+      </div>
+
+      <% # Displaying submit button %>
+      <div class="actions">
+        <%= form.submit %>
+      </div>
+
+    <% end %>
+  </div>
+<% else %>
+  <% if current_user.uid == "110391296899575374577" %>
+    <strong>It is recommended that the current primary officer's credentials are populated here</strong>
+  <% end %>
+  <div class="bigger-container">
+    <div class="container">
+    <%= form_with(model: @member) do |form| %>
+      <% if @member.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(member.errors.count, "error") %> prohibited this member from being saved:</h2>
+
+          <ul>
+            <% member.errors.each do |error| %>
+              <li><%= error.full_message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+
+      <div class="field">
+        <b>Your name:</b> <%= form.label :name, current_user.full_name %><%= form.text_field :name, value: current_user.full_name %>
+      </div>
+
+      <div class="field">
+        <%= form.label :description %>
+        <br>
+        <%= form.text_area :description, placeholder: "Enter a short description about yourself.." %>
+      </div>
+
+      <div class="field">
+        <%= form.label :birthday, "Birthday" %>
+        <br>
+        <%= form.date_field :birthday %>
+      </div>
+
+      <div class="field">
+        <%= form.label :classification %>
+        <br>
+        <%= form.text_field :classification, placeholder: "Enter Classification.." %>
+      </div>
+
+      <div class="field">
+      <%= form.label :major %>
+      <br>
+      <%= form.text_field :major, placeholder: "Enter Major.." %>
+      </div>
+
+      <div class="field">
+      <b>Email:</b> <%= form.label :email, current_user.email %><%= form.hidden_field :email, value: current_user.email %>
+      </div>
+
+      <div class="field">
+      <%= form.label :phone %>
+      <br>
+      <%= form.number_field :phone, placeholder: "Enter Phone.." %>
+      </div>
+
+      <div class="field">
+      <b>Profile picture:</b><br>.png and .jpg allowed<%= form.file_field :photo %>
+      </div>
+
+      <div class="actions">
+        <%= form.submit %>
+      </div>
+
+    <% end %>
+  </div>
+<% end %>

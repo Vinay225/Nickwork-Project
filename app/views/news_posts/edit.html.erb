@@ -1,0 +1,22 @@
+
+<% # Check if the current user is the ADMIN or creator of post %>
+  <% if current_user.uid == @news_post.userID  || current_user.uid == "110391296899575374577" %>
+  <center>
+    <h1>Editing Post!</h1>
+    </center>
+
+    <% # Rendeting Editing form %>
+    <%= render 'form', news_post: @news_post %>
+
+    <% # Rendering buttons to cancel changes %>
+    <center>
+    <%= link_to 'Back', @news_post %>
+  </center>
+  <% else %>
+  <% # If the user is not an ADMIN, or the creator of the post, user %>
+  <% # gets redirected %>
+    <center>
+    <h1>Not your post!</h1>
+    <%= link_to 'Back', news_posts_path %>
+    </center>
+  <% end %>

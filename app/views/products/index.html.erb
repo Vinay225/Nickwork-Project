@@ -1,0 +1,128 @@
+<head>
+  <style>
+
+    h1 {
+      text-align: center;
+    }
+
+    .card {
+      border-radius: 2em;
+      text-align: center;
+      box-shadow: 0 5px 10px rgba(0,0,0,.2);
+    }
+
+    .card:hover{
+      box-shadow: 0 5px 10px rgba(0,0,0,.5);
+    }
+
+    .list-group-flush .list-group-item {
+      font-size: 15px;
+    }
+
+    .css_img {
+      border-radius: 2em 0em 0em 2em;
+      width: 110%;
+    }
+
+    .container {
+      max-width: 65em;
+      margin: 0 auto;
+    }
+
+    .button-container {
+      margin-left: auto;
+      margin-right: auto;
+      justify-content: center;
+      width: 8em;
+    }
+
+    .contact {
+      text-align:center;
+      font-size:24px;
+    }
+
+ </style>
+</head>
+
+<p id="notice"><%= notice %></p>
+
+<h1>Products</h1>
+
+<% # If the user is an ADMIN, they can create a new product post %>
+<div><center>
+
+  <h5>
+    <% results = ActiveRecord::Base.connection.exec_query("select id from members where email='theaggienickwork@gmail.com'") %>
+    Please Contact the administrator for purchase inquiries.<br><br>
+    <%= link_to '<button type="button"> Contact </button>'.html_safe, member_url(results.rows[0][0]) %><br>
+  </h5>
+
+  <div class="button-container">
+  <% if current_user.uid == "110391296899575374577" %>
+    <%= link_to '<button type="button">Add New product</button>'.html_safe, new_product_path %>
+  <% end %>
+  </div>
+
+</div></center>
+
+<br>
+
+
+
+<div class="container">
+
+  <% # Loop that displays all procuts in separate cards %>
+  <% @products.each do |product| %>
+        <div class="card mb-3" style="border: 3px solid black;">
+          <div class="row g-0">
+
+            <% # Displaying image inside the card, if no image is attached %>
+            <% # then it displays a default image %>
+            <div class="col-md-3">
+            <% if product.photo.attached? %>
+              <%= image_tag(product.photo, width: 200) %>
+            <% else %>
+              <%= image_tag("https://nick-network.s3.us-east-2.amazonaws.com/Default.jpg", class: "css_img") %>
+            <% end %>
+            </div>
+
+            <% # Displaying only 189 characters from the description, as %>
+            <% # more characters can interfeer with the image outline %>
+            <div class="col-md-8">
+              <div class="card-body">
+                <h5 class="card-name", style="font-size: 19px;"> <%= product.name %> </h5>
+                <p class="card-text"> <%= product.description[0..189] %> </p>
+              </div>
+
+              <% # Adjusting sizing to display what each fied is %>
+              <table class="table table-sm">
+                <colgroup>
+                  <col span="1" style="width: 15%;">
+                  <col span="1" style="width: 70%;">
+                </colgroup>
+
+                <tbody>
+
+                  <% # Displaying price %>
+                  <tr>
+                    <th scope="row", style="font-weight: normal; color: gray;"> Price </th>
+                    <td> <%= "%.2f" % product.price %> </td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <% # ADMIN can edit and delete events, regular member can %>
+              <% # only view %>
+              <div class="card-body">
+                <%= link_to 'View', product, :class => "btn btn-primary" %>
+                <% if current_user.uid == "110391296899575374577" %>
+                  <%= link_to 'Edit', edit_product_path(product), :class => "btn btn-primary"%>
+                  <%= link_to 'Destroy', delete_product_path(product), :class => "btn btn-primary"%>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+        <br>
+  <% end %>
+</div>

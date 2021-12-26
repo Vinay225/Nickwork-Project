@@ -1,0 +1,73 @@
+<head>
+  <style>
+
+    h1 {
+      text-align: center;
+    }
+
+    .card {
+      text-align: center;
+    }
+
+    .css_img {
+      width: 100%;
+    }
+
+    .container {
+      max-width: 65em;
+      margin: 0 auto;
+    }
+
+    .button-container {
+      margin-left: auto;
+      margin-right: auto;
+      justify-content: center;
+      width: 8em;
+    }
+
+    .del-event {
+      text-align: center;
+    }
+
+  </style>
+</head>
+
+<% # Check if the current user is the ADMIN %>
+<% if current_user.uid == "110391296899575374577" %>
+  <p id="notice"><%= notice %></p>
+
+  <% # Displaying title of gallery post to be deleted %>
+  <h1> Deleting <%= @gallery.title %> </h1>
+
+  <div class="del-event">
+    <%= form_for(@gallery, :method => 'delete') do |f| %>
+
+    <% # Displaying photo to be deleted %>
+    <% if @gallery.photo.attached? %>
+      <%= image_tag(@gallery.photo, height: 300) %>
+    <% else %>
+      <%= image_tag("https://nick-network.s3.us-east-2.amazonaws.com/Default.jpg", class: "css_img") %>
+    <% end %>
+
+
+      <p>Are you sure you want to permanently delete this image?</p>
+      <p><%= @gallery.title %></p>
+
+      <% # Displaying buttons to confirm deletion or cancel %>
+      <div class="form-buttons">
+        <%= f.submit("Delete Post") %>
+        <%= link_to '<button type="button"> Back </button>'.html_safe, galleries_path %>
+      </div>
+
+    <% end %>
+    <br>
+    <br>
+  </div>
+
+<% else %>
+<% # If the user is not an ADMIN, redirect them back %>
+  <center>
+  <h1>You're not an admin!</h1>
+  <%= link_to 'Back', galleries_path %>
+  </center>
+<% end %>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>The Aggie Nickwork</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="shortcut icon" href="/assets/favicon.png"/>
+
+    <style>
+      /* Modify the background color */
+
+      .navbar-custom {
+          background-color: #500000;
+          margin-bottom: 0
+      }
+
+      ul.nav li a, ul.nav li a:visited {
+        color: white;
+      }
+
+      ul.nav li a:hover, ul.nav li a:active {
+        color: black;
+      }
+
+      ul.nav li.active a {
+        color: white;
+      }
+
+      .navbar-nav.navbar-center {
+          position: absolute;
+          transform: translatex(-50%);
+      }
+
+      [data-toggle="collapse"] .fa:before {
+        content: "\f139";
+      }
+
+      [data-toggle="collapse"].collapsed .fa:before {
+        content: "\f13a";
+      }
+
+    </style>
+
+  </head>
+
+<% # Displaying navigation bar %>
+  <nav class="navbar navbar-custom navbar-toggleable-md">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <center>
+
+        <% # Displaying logo in the navigation bar %>
+        <a class="navbar-brand" href="/">
+        <%= image_tag ("https://nick-network.s3.us-east-2.amazonaws.com/imgNN.jpg") , class: "img-responsive", width: "25", height: "25" %>
+        </a>
+
+        <% # Displaying organization name in the navigation bar %>
+        <a href="/">
+        <%= image_tag ("https://nick-network.s3.us-east-2.amazonaws.com/OrgName.jpg") %>
+        </a>
+
+        </center>
+      </div>
+      <ul class="nav navbar-nav" style="margin-bottom: 0; margin-left: 0px">
+
+        <% # Displaying a dropdown arrow to collapse navbar %>
+        <li>
+          <button class="btn btn-secondarydropdown-toggle"  style="margin-top: 8px;" type="button" data-toggle="collapse" data-target="#navbarNav">
+            <span class="navbar-toggler-icon">&#8711</span>
+          </button>
+        </li>
+
+      </ul>
+
+      <% # Displaying all pages with corresponding redirects, and sign in and %>
+      <% # and sign out options %>
+      <ul class="nav navbar-nav" style="margin-bottom: 0" id="navbarNav">
+        <li> <% if !current_user %> <%= link_to "Sign In", user_google_oauth2_omniauth_authorize_path, class:"nav-link" %> <% end %> </li>
+        <li> <% if current_user %>  <%= link_to "Sign Out", destroy_user_session_path, class:"nav-link" %> <% end %> </li>
+        <li> <%= link_to "Home", landing_Index_path, class:"nav-link"%> </li>
+        <li> <%= link_to "About Us", about_us_Index_path, class:"nav-link"%> </li>
+        <li> <%= link_to "Events", events_path, class:"nav-link"%> </li>
+        <li> <%= link_to "Meetings", meetings_path, class:"nav-link"%> </li>
+        <li> <%= link_to "News Feed", news_posts_path, class:"nav-link"%>  </li>
+        <li> <%= link_to "Gallery", galleries_path, class:"nav-link"%> </li>
+        <li> <%= link_to "Products", products_path, class:"nav-link"%> </li>
+        <li> <%= link_to "Contact", contact_index_path, class:"nav-link"%> </li>
+        <li> <%= link_to "Members", members_path, class:"nav-link"%> </li>
+        <li> <%= link_to "Profile", members_path, class:"nav-link"%> </li>
+      </ul>
+    </div>
+  </nav>
+
+
+  <body>
+    <%= yield %>
+  </body>
+</html>

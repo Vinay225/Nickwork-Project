@@ -1,0 +1,136 @@
+<head>
+  <style>
+
+    h1 {
+      text-align: center;
+    }
+
+    .card {
+      text-align: center;
+    }
+
+    .css_img {
+      width: 100%;
+    }
+
+    .container {
+      max-width: 65em;
+      margin: 0 auto;
+    }
+
+    .button-container {
+      margin-left: auto;
+      margin-right: auto;
+      justify-content: center;
+      width: 8em;
+    }
+
+    .del-meeting {
+      text-align: center;
+    }
+
+  </style>
+</head>
+
+<% # Check if the current user is the ADMIN or the creator of the profile %>
+<% if current_user.email == @member.email  || current_user.uid == "110391296899575374577" %>
+  <p id="notice"><%= notice %></p>
+
+  <h1> Deleting <%= @member.name %> </h1>
+
+  <div class="del-meeting">
+    <%= form_for(@member, :method => 'delete') do |f| %>
+
+      <% # Displaying the name of the progile to be deleted %>
+      <p>Are you sure you want to permanently delete this member?</p>
+      <p><%= @member.name %></p>
+
+      <% # Displaying button to confirm or cancel deletion %>
+      <div class="form-buttons">
+        <%= f.submit("Delete member") %>
+        <%= link_to '<button type="button"> Back </button>'.html_safe, members_path %>
+      </div>
+
+    <% end %>
+    <br>
+    <br>
+  </div>
+
+<% # Displaying the profile to be deleted %>
+  <div class="container">
+          <div class="card mb-3">
+            <div class="row g-0">
+              <div class="col-md-4">
+              <% if @member.photo.attached? %>
+                <%= image_tag(@member.photo, width: 200) %>
+              <% else %>
+                <%= image_tag("https://nick-network.s3.us-east-2.amazonaws.com/Default.jpg", class: "css_img") %>
+              <% end %>
+              </div>
+              <div class="col-md-8">
+                <div class="card-body">
+                  <p class="card-text"> <%= @member.description %> </p>
+                </div>
+
+                <table class="table table-sm">
+                  <colgroup>
+                    <col span="1" style="width: 28%;">
+                    <col span="1" style="width: 72%;">
+                  </colgroup>
+
+                  <tbody>
+                    <tr>
+                      <th scope="row", style="font-weight: normal; color: gray;"> Birthday </th>
+                      <td>
+                      <% if @member.birthday%>
+                        <%= @member.birthday.strftime("%m/%d/%Y") %>
+                      <% end %>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th scope="row", style="font-weight: normal; color: gray;"> Description </th>
+                      <td> <%= @member.description %> </td>
+                    </tr>
+
+                    <tr>
+                      <th scope="row", style="font-weight: normal; color: gray;"> Classification </th>
+                      <td> <%= @member.classification %> </td>
+                    </tr>
+
+                    <tr>
+                      <th scope="row", style="font-weight: normal; color: gray;"> Major </th>
+                      <td> <%= @member.major %> </td>
+                    </tr>
+
+                    <tr>
+                      <th scope="row", style="font-weight: normal; color: gray;"> email </th>
+                      <td> <%= @member.email %> </td>
+                    </tr>
+
+                    <tr>
+                      <th scope="row", style="font-weight: normal; color: gray;"> phone </th>
+                      <td> <%= @member.phone %> </td>
+                    </tr>
+
+                    <tr>
+                      <th scope="row", style="font-weight: normal; color: gray;"> Created on </th>
+                      <td> <%= @member.created_at.strftime("%m/%d/%Y at %I:%M%p") %> </td>
+                    </tr>
+                    <tr>
+                      <th scope="row", style="font-weight: normal; color: gray;"> Last updated on </th>
+                      <td> <%= @member.updated_at.strftime("%m/%d/%Y at %I:%M%p") %> </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+  </div>
+  <% else %>
+  <% # If the user is not an ADMIN, or the profile owner, user %>
+  <% # gets redirected %>
+    <center>
+    <h1>Not your profile!</h1>
+    <%= link_to 'Back', members_path %>
+    </center>
+  <% end %>

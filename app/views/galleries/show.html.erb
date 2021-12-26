@@ -1,0 +1,69 @@
+<head>
+  <style>
+
+    h1 {
+      text-align: center;
+    }
+
+    .card {
+      text-align: center;
+    }
+
+    .css_img {
+      width: 100%;
+    }
+
+    .container {
+      max-width: 65em;
+      margin: 0 auto;
+    }
+
+    .button-container {
+      margin-left: auto;
+      margin-right: auto;
+      justify-content: center;
+      width: 8em;
+    }
+
+
+ </style>
+</head>
+<center>
+  <p id="notice"><%= notice %></p>
+
+  <% # Displaying title of post %>
+  <p>
+    <strong>
+      <%= @gallery.title %>
+    </strong>
+  </p>
+
+  <% # Displaying description of post %>
+  <p>
+    <%= @gallery.description %>
+  </p>
+
+  <% # Displaying image, if no image is attached then it displays %>
+  <% # a default image %>
+  <% if @gallery.photo.attached? %>
+    <%= image_tag(@gallery.photo, height: 300) %>
+  <% else %>
+    <div class="card mb-3" style="border: 3px solid black;">
+    <%= image_tag("https://nick-network.s3.us-east-2.amazonaws.com/Default.jpg", class: "css_img") %>
+    </div>
+  <% end %>
+
+  <% # ADMIN can edit and delete events, regular member can %>
+  <% # only view %>
+  <% if current_user.uid == "110391296899575374577" %><br>
+    <%= link_to 'Edit', edit_gallery_path(@gallery) %> |
+    <%= link_to 'Destroy', delete_gallery_path(@gallery) %>
+  <% end %>
+<br>
+<% # Link to go back to index page %>
+<% if @gallery.title == 'qr_code_contact' %>
+  <%= link_to 'Back', '/contact/index'.html_safe %>
+<% else %>
+  <%= link_to 'Back', galleries_path %>
+<% end %>
+</center>

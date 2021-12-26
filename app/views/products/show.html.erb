@@ -1,0 +1,103 @@
+<head>
+  <style>
+
+    h1 {
+      text-align: center;
+    }
+
+    .card {
+      text-align: center;
+    }
+
+    .css_img {
+      width: 100%;
+    }
+
+    .container {
+      max-width: 65em;
+      margin: 0 auto;
+    }
+
+    .button-container {
+      margin-left: auto;
+      margin-right: auto;
+      justify-content: center;
+      width: 8em;
+    }
+
+
+ </style>
+</head>
+
+<p id="notice"><%= notice %></p>
+
+<% # Displaying title of event %>
+<h1> <%= @product.name %> </h1>
+<div class="container">
+        <div class="card mb-3">
+          <div class="row g-0">
+
+            <% # Displaying image iside the card, if no image is attached %>
+            <% # then it displays a default image %>
+            <div class="col-md-4">
+            <% if @product.photo.attached? %>
+              <%= image_tag(@product.photo, width: 200) %>
+            <% else %>
+              <%= image_tag("https://nick-network.s3.us-east-2.amazonaws.com/Default.jpg", class: "css_img") %>
+            <% end %>
+            </div>
+
+            <div class="col-md-8">
+
+              <% # Displaying Description %>
+              <div class="card-body">
+                <p class="card-text"> <%= @product.description %> </p>
+              </div>
+
+              <% # Adjusting sizing to display what each fied is %>
+              <table class="table table-sm">
+                <colgroup>
+                  <col span="1" style="width: 28%;">
+                  <col span="1" style="width: 72%;">
+                </colgroup>
+
+                <tbody>
+
+                  <% # Displaying time in MM/DD/YYYY format %>
+                  <tr>
+                    <th scope="row", style="font-weight: normal; color: gray;"> Name </th>
+                    <td> <%= @product.name %> </td>
+                  </tr>
+
+                  <% # Displaying Price %>
+                  <tr>
+                    <th scope="row", style="font-weight: normal; color: gray;"> Price </th>
+                    <td> <%= "%.2f" % @product.price %> </td>
+                  </tr>
+
+                  <% # Displaying when the post was created %>
+                  <tr>
+                    <th scope="row", style="font-weight: normal; color: gray;"> Created on </th>
+                    <td> <%= @product.created_at.strftime("%m/%d/%Y at %I:%M%p") %> </td>
+                  </tr>
+
+                  <% # Displaying when the post was last updated/edited %>
+                  <tr>
+                    <th scope="row", style="font-weight: normal; color: gray;"> Last updated on </th>
+                    <td> <%= @product.updated_at.strftime("%m/%d/%Y at %I:%M%p") %> </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <% # ADMIN can edit and delete events, regular member can %>
+        <% # only view %>
+        <div class="container", style="margin-left: 30em;">
+          <% if current_user.uid == "110391296899575374577" %>
+            <%= link_to '<button type="button"> Edit </button>'.html_safe, edit_product_path(@product) %>
+          <% end %>
+          <%= link_to '<button type="button"> Back </button>'.html_safe, products_path %>
+        </div>
+</div>
